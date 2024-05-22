@@ -13,12 +13,14 @@ mongoose.connect('mongodb://localhost/recipesDB', { useNewUrlParser: true, useUn
 
 // Definir el esquema y modelo de Recetas
 const recipeSchema = new mongoose.Schema({
-  title: String,
-  category: String,
-  ingredients: String,
-  instructions: String,
-  publicationDate: { type: Date, default: Date.now }
-});
+    title: String,
+    category: String,
+    ingredients: String,
+    instructions: String,
+    publicationDate: { type: Date, default: Date.now },
+    price: Number,
+    image: String
+  });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 

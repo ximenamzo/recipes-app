@@ -21,10 +21,10 @@ const Dashboard = () => {
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
-        setCurrentPage(1);
+        setCurrentPage(1); // Reset page to 1 on search
     };
 
-    const filteredRecipes = recipes.filter(recipe => 
+    const filteredRecipes = recipes.filter(recipe =>
         recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         recipe.ingredients.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -33,21 +33,30 @@ const Dashboard = () => {
     const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
     const currentRecipes = filteredRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
 
-    const TotalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
+    const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
 
-    const handlePageChange = (pageNumber) => { setCurrentPage(pageNumber); };
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
-    
     return (
         <div className="dashboard-container">
             <h1>Panel de Administración de Recetas</h1>
             <div className="actions">
                 <button className="add-recipe">+ Agregar Receta</button>
+                <input
+                    type="text"
+                    placeholder="Buscar por título o ingredientes"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="search-recipes"
+                />
                 <select onChange={handleFilterChange} className="filter-recipes">
                     <option value="recent">Más Recientes</option>
                     <option value="oldest">Más Antiguas</option>
                 </select>
             </div>
+
             <table className="recipes-table">
                 <thead>
                     <tr>
@@ -58,7 +67,7 @@ const Dashboard = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {recipes.map((recipe) => (
+                    {currentRecipes.map((recipe) => (
                         <tr key={recipe._id}>
                             <td>{recipe.title}</td>
                             <td className="ingredients">{recipe.ingredients}</td>
@@ -72,6 +81,17 @@ const Dashboard = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 }
