@@ -15,12 +15,15 @@ const Dashboard = () => {
     const [isViewModalOpen, setViewModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-    const recipesPerPage = 5;
+    const recipesPerPage = 10;
 
     useEffect(() => {
         fetch('http://localhost:5000/api/recipes')
             .then(res => res.json())
-            .then(data => setRecipes(data))
+            .then(data => {
+                const sortedRecipes = data.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
+                setRecipes(sortedRecipes)
+            })
             .catch(err => console.error('Error fetching recipes:', err));
     }, []);
 
@@ -32,6 +35,10 @@ const Dashboard = () => {
             setRecipes([...recipes].sort((a, b) => new Date(a.publicationDate) - new Date(b.publicationDate)));
         }
     };
+
+    const removeHtmlTags = (text) => {
+        return text.replace(/<\/?[^>]+(>|$)/g, "");
+    };    
     
 
     const handleSearchChange = (e) => {
@@ -124,8 +131,8 @@ const Dashboard = () => {
                 <tbody>
                     {currentRecipes.map((recipe) => (
                         <tr key={recipe._id}>
-                            <td>{recipe.title}</td>
-                            <td className="ingredients">{recipe.ingredients}</td>
+                            <td>{removeHtmlTags(recipe.title)}</td>
+                            <td className="ingredients">{removeHtmlTags(recipe.ingredients)}</td>
                             <td>{new Date(recipe.publicationDate).toLocaleDateString()}</td>
                             <td>
                                 <button className="icon-button view-btn" onClick={() => { setSelectedRecipe(recipe); setViewModalOpen(true); }}>
