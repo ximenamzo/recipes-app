@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import AddModal from '../components/AddModal.js';
+import ViewModal from '../components/ViewModal';
+import EditModal from '../components/EditModal';
+import DeleteModal from '../components/DeleteModal';
 
 const Dashboard = () => {
     const [recipes, setRecipes] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
+    const [isAddModalOpen, setAddModalOpen] = useState(false);
+    const [isViewModalOpen, setViewModalOpen] = useState(false);
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const recipesPerPage = 5;
 
     useEffect(() => {
@@ -16,13 +25,59 @@ const Dashboard = () => {
     }, []);
 
     const handleFilterChange = (e) => {
-        console.log("Filtrando por:", e.target.value);
+        const sortType = e.target.value;
+        if (sortType === "recent") {
+            setRecipes([...recipes].sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate)));
+        } else if (sortType === "oldest") {
+            setRecipes([...recipes].sort((a, b) => new Date(a.publicationDate) - new Date(b.publicationDate)));
+        }
     };
+    
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
         setCurrentPage(1); // Reset page to 1 on search
     };
+
+    const handleAddRecipe = (newRecipe) => {
+        fetch('http://localhost:5000/api/recipes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newRecipe),
+        })
+        .then(res => res.json())
+        .then(data => {
+          setRecipes([...recipes, data]);
+        })
+        .catch(err => console.error('Error adding recipe:', err));
+      };
+
+      const handleSaveRecipe = (updatedRecipe) => {
+        fetch(`http://localhost:5000/api/recipes/${updatedRecipe._id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedRecipe),
+        })
+        .then(res => res.json())
+        .then(data => {
+          const updatedRecipes = recipes.map(recipe =>
+            recipe._id === data._id ? data : recipe
+          );
+          setRecipes(updatedRecipes);
+        })
+        .catch(err => console.error('Error updating recipe:', err));
+      };
+
+      const handleDeleteRecipe = (id) => {
+        fetch(`http://localhost:5000/api/recipes/${id}`, {
+          method: 'DELETE',
+        })
+        .then(() => {
+          const updatedRecipes = recipes.filter(recipe => recipe._id !== id);
+          setRecipes(updatedRecipes);
+        })
+        .catch(err => console.error('Error deleting recipe:', err));
+      };
 
     const filteredRecipes = recipes.filter(recipe =>
         recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -40,10 +95,10 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="dashboard-container">
+        <div className={`dashboard-container`}>
             <h1>Panel de Administración de Recetas</h1>
             <div className="actions">
-                <button className="add-recipe">+ Agregar Receta</button>
+                <button className="add-recipe" onClick={() => setAddModalOpen(true)}>+ Agregar Receta</button>
                 <input
                     type="text"
                     placeholder="Buscar por título o ingredientes"
@@ -73,9 +128,15 @@ const Dashboard = () => {
                             <td className="ingredients">{recipe.ingredients}</td>
                             <td>{new Date(recipe.publicationDate).toLocaleDateString()}</td>
                             <td>
-                                <button className="icon-button view-btn"><FontAwesomeIcon icon={faEye} /></button>
-                                <button className="icon-button edit-btn"><FontAwesomeIcon icon={faPencilAlt} /></button>
-                                <button className="icon-button delete-btn"><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                <button className="icon-button view-btn" onClick={() => { setSelectedRecipe(recipe); setViewModalOpen(true); }}>
+                                    <FontAwesomeIcon icon={faEye} />
+                                </button>
+                                <button className="icon-button edit-btn" onClick={() => { setSelectedRecipe(recipe); setEditModalOpen(true); }}>
+                                    <FontAwesomeIcon icon={faPencilAlt} />
+                                </button>
+                                <button className="icon-button delete-btn" onClick={() => { setSelectedRecipe(recipe); setDeleteModalOpen(true); }}>
+                                    <FontAwesomeIcon icon={faTrashAlt} />
+                                </button>
                             </td>
                         </tr>
                     ))}
@@ -92,6 +153,10 @@ const Dashboard = () => {
                     </button>
                 ))}
             </div>
+            <AddModal show={isAddModalOpen} onClose={() => setAddModalOpen(false)} onSave={handleAddRecipe} />
+            <ViewModal show={isViewModalOpen} onClose={() => setViewModalOpen(false)} recipe={selectedRecipe} />
+            <EditModal show={isEditModalOpen} onClose={() => setEditModalOpen(false)} onSave={handleSaveRecipe} recipe={selectedRecipe} />
+            <DeleteModal show={isDeleteModalOpen} onClose={() => setDeleteModalOpen(false)} onDelete={handleDeleteRecipe} recipe={selectedRecipe} />
         </div>
     );
 }

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const EditModal = ({ show, onClose, onSave, recipe }) => {
   const [title, setTitle] = useState('');
@@ -6,7 +8,7 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
   const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (recipe) {
@@ -19,47 +21,86 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
     }
   }, [recipe]);
 
-  const handleSave = () => {
-    const updatedRecipe = { ...recipe, title, category, ingredients, instructions, price, image };
-    onSave(updatedRecipe);
-    onClose();
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
+
+  const handleSave = async () => {
+    console.log('Updating recipe ID:', recipe._id);
+    const updatedRecipe = { title, category, ingredients, instructions, price };
+  
+    if (image && typeof image === 'object') {
+      const formData = new FormData();
+      formData.append('image', image);
+      try {
+        const imageResponse = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        if (!imageResponse.ok) {
+          throw new Error('Error uploading image');
+        }
+        const imageData = await imageResponse.json();
+        updatedRecipe.image = imageData.path;
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        return;
+      }
+    } else {
+      updatedRecipe.image = recipe.image;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/recipes/${recipe._id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedRecipe),
+      });
+      if (!response.ok) {
+        throw new Error('Error updating recipe');
+      }
+      const savedRecipe = await response.json();
+      onSave(savedRecipe);
+      onClose();
+    } catch (error) {
+      console.error('Error updating recipe:', error);
+    }
+  };
+  
 
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-        <div className="p-6">
-          <h2 className="text-xl font-bold mb-4">Editar Receta</h2>
-          <div className="mb-4">
-            <label className="block text-gray-700">Título</label>
-            <input type="text" className="w-full px-4 py-2 border rounded-lg" value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Categoría</label>
-            <input type="text" className="w-full px-4 py-2 border rounded-lg" value={category} onChange={(e) => setCategory(e.target.value)} />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Ingredientes</label>
-            <textarea className="w-full px-4 py-2 border rounded-lg" value={ingredients} onChange={(e) => setIngredients(e.target.value)} />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Instrucciones</label>
-            <textarea className="w-full px-4 py-2 border rounded-lg" value={instructions} onChange={(e) => setInstructions(e.target.value)} />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Precio</label>
-            <input type="number" className="w-full px-4 py-2 border rounded-lg" value={price} onChange={(e) => setPrice(e.target.value)} />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">Imagen</label>
-            <input type="text" className="w-full px-4 py-2 border rounded-lg" value={image} onChange={(e) => setImage(e.target.value)} />
-          </div>
-          <div className="flex justify-end space-x-4">
-            <button className="bg-gray-500 text-white px-4 py-2 rounded-lg" onClick={onClose}>Cancelar</button>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={handleSave}>Aceptar</button>
-          </div>
+    <div className="modal-overlay">
+      <div className="modal">
+        <h2>Editar Receta</h2>
+        <div className="form-group">
+          <label>Título</label>
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </div>
+        <div className="form-group">
+          <label>Categoría</label>
+          <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
+        </div>
+        <div className="form-group">
+          <label>Ingredientes</label>
+          <ReactQuill value={ingredients} onChange={setIngredients} className="quill" />
+        </div>
+        <div className="form-group">
+          <label>Instrucciones</label>
+          <ReactQuill value={instructions} onChange={setInstructions} className="quill" />
+        </div>
+        <div className="form-group">
+          <label>Precio</label>
+          <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+        </div>
+        <div className="form-group">
+          <label>Imagen</label>
+          <input type="file" onChange={handleImageChange} />
+        </div>
+        <div className="form-actions">
+          <button className="cancel-btn" onClick={onClose}>Cancelar</button>
+          <button className="save-btn" onClick={handleSave}>Aceptar</button>
         </div>
       </div>
     </div>

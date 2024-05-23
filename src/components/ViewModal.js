@@ -1,20 +1,40 @@
 import React from 'react';
 
 const ViewModal = ({ show, onClose, recipe }) => {
-  if (!show) return null;
+  if (!show || !recipe) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-      <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-        <div className="p-6">
-          <h2 className="text-xl font-bold mb-4">{recipe.title}</h2>
-          <p className="mb-4"><strong>Categoría:</strong> {recipe.category}</p>
-          <p className="mb-4"><strong>Ingredientes:</strong> {recipe.ingredients}</p>
-          <p className="mb-4"><strong>Instrucciones:</strong> {recipe.instructions}</p>
-          <p className="mb-4"><strong>Precio:</strong> {recipe.price}</p>
-          <div className="flex justify-end">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={onClose}>Cerrar</button>
+    <div className="modal-overlay">
+      <div className="modal">
+        <h2>Ver Receta</h2>
+        <div className="form-group">
+          <label>Título:</label>
+          <p>{recipe.title}</p>
+        </div>
+        <div className="form-group">
+          <label>Categoría:</label>
+          <p>{recipe.category}</p>
+        </div>
+        <div className="form-group">
+          <label>Ingredientes:</label>
+          <div dangerouslySetInnerHTML={{ __html: recipe.ingredients }} />
+        </div>
+        <div className="form-group">
+          <label>Instrucciones:</label>
+          <div dangerouslySetInnerHTML={{ __html: recipe.instructions }} />
+        </div>
+        <div className="form-group">
+          <label>Precio:</label>
+          <p>${recipe.price}</p>
+        </div>
+        {recipe.image && (
+          <div className="form-group">
+            <label>Imagen:</label>
+            <img src={`http://localhost:5000${recipe.image}`} alt={recipe.title} style={{ width: '100px' }} />
           </div>
+        )}
+        <div className="form-actions">
+          <button className="cancel-btn" onClick={onClose}>Cerrar</button>
         </div>
       </div>
     </div>
