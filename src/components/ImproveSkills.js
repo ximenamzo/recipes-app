@@ -8,6 +8,10 @@ export default function ImproveSkills(){
         "Genera tu propio entorno culinario",
     ]
 
+    const exploreRecipes = () => {
+        window.location.href = '/recipes';
+    };
+
     return (
         <div className="section improve-skills">
             <div className="col img">
@@ -18,7 +22,7 @@ export default function ImproveSkills(){
                 { list.map((item, index) => (
                     <p className="skill-item" key={index}>{item}</p>
                 )) }
-                <button className="btn">Explorar recetas</button>
+                <button className="btn" onClick={exploreRecipes}>Explorar recetas</button>
             </div>
         </div>
     )

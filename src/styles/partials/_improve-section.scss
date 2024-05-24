@@ -23,6 +23,11 @@
         }
         .btn{
             margin-top: .75em;
+            cursor: pointer;
+            transition: 0.3s ease;
+            &:hover{
+                box-shadow: 0 6px 10px var(--shadow-color);
+            }
         }
     }
 }
