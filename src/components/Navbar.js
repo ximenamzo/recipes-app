@@ -10,17 +10,17 @@ export default function Navbar(){
     const location = useLocation()
     const links = [
         {
-            name: "Home",
+            name: "Inicio",
             path: "/",
             icon: faHome
         },
         {
-            name: "Recipes",
+            name: "Recetas",
             path: "/recipes",
             icon: faList
         },
         {
-            name: "Settings",
+            name: "Configuración",
             path: "/settings",
             icon: faCog
         }
@@ -32,7 +32,7 @@ export default function Navbar(){
     return (
         <>
             <div className="navbar container">
-                <Link to="/" className="logo">F<span>oo</span>diesHub</Link>
+                <Link to="/" className="logo">Xime<span>Recetas</span></Link>
                 <div className="nav-links">
                     { links.map(link => (
                         <Link className={location.pathname === link.path ? "active" : ""} to={link.path} key={link.name}>{link.name}</Link>

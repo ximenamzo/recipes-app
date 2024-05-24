@@ -15,9 +15,9 @@ export default function HeroSection(){
     return (
         <div className="section hero">
             <div className="col typography">
-                <h1 className="title">What Are We About</h1>
-                <p className="info">FoodiesHub is a place where you can please your soul and tummy with delicious food recepies of all cuisine. And our service is absolutely free. So start exploring now.</p>
-                <button className="btn">explore now</button>
+                <h1 className="title">¿Qué encontarás aquí?</h1>
+                <p className="info">En este pequeño blog encontrarás recetas de todo tipo, sobre todo aquellas en las cuales no necesitas de los ingredientes más gourmet para lograr una deliciosa comida!!</p>
+                {/* <button className="btn">explore now</button> */}
             </div>
             <div className="col gallery">
                 { images.map((src, index) => (

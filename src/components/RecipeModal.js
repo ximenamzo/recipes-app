@@ -9,9 +9,12 @@ export default function RecipeModal({ recipe, onClose }) {
                 <button className="close-btn" onClick={onClose}>X</button>
                 <img src={recipe.image} alt={recipe.title} className="modal-img" />
                 <h1>{recipe.title}</h1>
-                <p><strong>Categoría:</strong> {recipe.category}</p>
-                <p><strong>Ingredientes:</strong> <span dangerouslySetInnerHTML={{ __html: recipe.ingredients }} /></p>
-                <p><strong>Instrucciones:</strong> <span dangerouslySetInnerHTML={{ __html: recipe.instructions }} /></p>
+                <h3>Categoría:</h3>
+                <p>{recipe.category}</p>
+                <h3>Ingredientes:</h3>
+                <p><span dangerouslySetInnerHTML={{ __html: recipe.ingredients }} /></p>
+                <h3>Instrucciones:</h3>
+                <p><span dangerouslySetInnerHTML={{ __html: recipe.instructions }} /></p>
             </div>
         </div>
     );

@@ -11,8 +11,9 @@ export default function RecipeCard({ recipe, onView }) {
             <CustomImage imgSrc={recipe.image} pt="65%" />
             <div className="recipe-card-info">
                 <p className="recipe-title">{removeHtmlTags(recipe.title)}</p>
+                <p className="recipe-category">{removeHtmlTags(recipe.category)}</p>
                 <p className="recipe-desc">{removeHtmlTags(recipe.ingredients)}</p>
-                <a className="view-btn" onClick={onView}>VIEW RECIPE</a>
+                <a className="view-btn" onClick={onView}>VER RECETA</a>
             </div>
         </div>
     );
