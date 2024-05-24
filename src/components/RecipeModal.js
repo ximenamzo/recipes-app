@@ -15,6 +15,8 @@ export default function RecipeModal({ recipe, onClose }) {
                 <p><span dangerouslySetInnerHTML={{ __html: recipe.ingredients }} /></p>
                 <h3>Instrucciones:</h3>
                 <p><span dangerouslySetInnerHTML={{ __html: recipe.instructions }} /></p>
+                <h3>Precio aproximado:</h3>
+                <p>$ {recipe.price} MXN.</p>
             </div>
         </div>
     );

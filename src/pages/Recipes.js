@@ -6,6 +6,8 @@ import RecipeModal from "../components/RecipeModal";
 export default function Recipes() {
     const [recipes, setRecipes] = useState([]);
     const [filteredRecipes, setFilteredRecipes] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recipesPerPage] = useState(12);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -17,14 +19,14 @@ export default function Recipes() {
                     ...recipe,
                     image: recipe.image ? `http://localhost:5000${recipe.image}` : '/img/default-image.jpg',
                 }));
-                setRecipes(shuffleArray(updatedData)); // Mezclar las recetas antes de establecer el estado
-                setFilteredRecipes(shuffleArray(updatedData)); // Inicializa con todas las recetas en orden aleatorio
+                setRecipes(shuffleArray(updatedData));
+                setFilteredRecipes(shuffleArray(updatedData));
             })
             .catch(err => console.error('Error fetching recipes:', err));
     }, []);
 
     const handleSearchChange = (searchValue) => {
-        setSearchTerm(searchValue);
+        setCurrentPage(1); // Reset to first page on new search
         filterAndSortRecipes(searchValue, null);
     };
 
@@ -60,17 +62,31 @@ export default function Recipes() {
         return array;
     };
 
+    const indexOfLastRecipe = currentPage * recipesPerPage;
+    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+    const currentRecipes = filteredRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+
+    const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div>
             <PreviousSearches onSearchChange={handleSearchChange} onSortChange={handleSortChange} onRandomRecipe={handleRandomRecipe} />
+            
             <div className="recipes-container">
-                {filteredRecipes.length > 0 ? (
-                    filteredRecipes.map((recipe, index) => (
-                        <RecipeCard key={index} recipe={recipe} onView={() => setSelectedRecipe(recipe)} />
-                    ))
-                ) : (
-                    <p className="no-results"><span>No se han encontrado resultados en su búsqueda.</span><br/><br/>Intente con otra palabra clave.</p>
-                )}
+                {currentRecipes.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe} onView={() => setSelectedRecipe(recipe)} />
+                ))}
+                {filteredRecipes.length === 0 && <p className="no-results"><span>No se han encontrado resultados en su búsqueda.</span><br/><br/>Intente con otra palabra clave.</p>}
+            </div>
+
+            <div className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                    <button key={index + 1} onClick={() => paginate(index + 1)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                        {index + 1}
+                    </button>
+                ))}
             </div>
             {selectedRecipe && <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />}
             {recipes.length === 0 && <p className="no-recipes"><span>Actualmente no hay recetas disponibles.</span><br/><br/>Por favor, inténtelo más tarde.</p>}

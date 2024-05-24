@@ -1,9 +1,0 @@
-## Para iniciar el servidor de mongodb
-
-    $ node server.js
-
-
-
-## Para iniciar la página
-
-    $ npm start

@@ -1,0 +1,120 @@
+## Para iniciar el servidor de mongodb
+
+    $ node server.js
+
+
+
+## Para iniciar la página
+
+    $ npm start
+
+/home/xime/CodeProjects/recipes-app
+
+db.recipes.insertMany([
+    {
+        title: "Sándwich",
+        category: "Receta Rápida",
+        ingredients: "Pan de molde, mayonesa, jamón, verduras a tu elección, sabritas.",
+        instructions: "Unta mayonesa en ambos panes (POR DENTRO, POR DONDE CIERRA), coloca el jamón y las verduras de tu elección (o no, o nada), junta las rebanadas POR DENTRO y disfruta. Puedes acompañar con unas sabritas dentro o fuera de tu sándwich.",
+        publicationDate: new Date(),
+        price: 30,
+        image: '/public/img/recipes/1716437062148-Python-logo-notext.svg.png'
+    },
+    {
+        title: "Ramen",
+        category: "Receta económica",
+        ingredients: "Ramen de bolsita, 2 huevos, verduras a tu elección, Queso machego (opcional)",
+        instructions: "Para esta receta se utilizó Calabacita y Zanahoria. Parte las verduras en tiras o rodajas y hiérvelas., Hierve los huevos. Déjalos enfriar., Cocina la sopa como más te guste. Cuando ya esté la pasta con la textura de tu gusto, agrega queso en caso de que así lo quieras., Sirve el ramen en un plato sopero, coloca los huevos pelados y partidos por mitad, las verduras y ¡A disfrutar!",
+        publicationDate: new Date(),
+        price: 40,
+        image: '/public/img/recipes/1716437062148-Python-logo-notext.svg.png'
+    },
+    {
+        title: "",
+        category: "",
+        ingredients: "",
+        instructions: "",
+        publicationDate: new Date(),
+        price: 00,
+        image: '/public/img/recipes/1716437062148-Python-logo-notext.svg.png'
+    }
+]);
+
+MongoDB Cheatsheet
+------------------
+
+1. Conexión a MongoDB:
+   mongo --host <hostname> --port <port>
+
+2. Listar Bases de Datos:
+   show dbs
+
+3. Cambiar o Crear Base de Datos:
+   use <nombre_de_la_base_de_datos>
+
+4. Listar Colecciones en la Base de Datos Actual:
+   show collections
+
+5. Crear Colección:
+   db.createCollection("<nombre_de_la_colección>")
+
+6. Insertar un Documento en una Colección:
+   db.<nombre_de_la_colección>.insertOne({nombre: "Juan", edad: 30})
+
+7. Insertar Varios Documentos en una Colección:
+   db.<nombre_de_la_colección>.insertMany([
+       {nombre: "Ana", edad: 28},
+       {nombre: "Luis", edad: 35}
+   ])
+
+8. Mostrar Documentos de una Colección:
+   db.<nombre_de_la_colección>.find()
+
+9. Mostrar Documentos con Filtro:
+   db.<nombre_de_la_colección>.find({edad: {$gt: 30}})
+
+10. Modificar un Documento:
+    db.<nombre_de_la_colección>.updateOne({nombre: "Ana"}, {$set: {edad: 29}})
+
+11. Modificar Varios Documentos:
+    db.<nombre_de_la_colección>.updateMany({edad: {$lt: 30}}, {$set: {activo: true}})
+
+12. Eliminar un Documento:
+    db.<nombre_de_la_colección>.deleteOne({nombre: "Luis"})
+
+13. Eliminar Varios Documentos:
+    db.<nombre_de_la_colección>.deleteMany({activo: true})
+
+14. Contar Documentos en una Colección:
+    db.<nombre_de_la_colección>.count()
+
+15. Exportar una Base de Datos (usando mongodump):
+    mongodump --db <nombre_de_la_base_de_datos> --out <directorio_de_destino>
+
+16. Importar una Base de Datos (usando mongorestore):
+    mongorestore --db <nombre_de_la_base_de_datos> <path_al_backup_de_la_base_de_datos>
+
+17. Crear Índice en una Colección:
+    db.<nombre_de_la_colección>.createIndex({nombre: 1})  // 1 para ascendente, -1 para descendente
+
+18. Ver Índices de una Colección:
+    db.<nombre_de_la_colección>.getIndexes()
+
+19. Eliminar Índice:
+    db.<nombre_de_la_colección>.dropIndex("nombre_1")
+
+20. Agregar Usuario a MongoDB:
+    db.createUser({
+        user: "miusuario",
+        pwd: "micontraseña",
+        roles: [{role: "readWrite", db: "midatabase"}]
+    })
+
+21. Cambiar Contraseña de Usuario:
+    db.changeUserPassword("miusuario", "nuevacontraseña")
+
+22. Autenticarse en una Base de Datos:
+    db.auth("miusuario", "micontraseña")
+
+23. Salir de MongoDB:
+    exit
