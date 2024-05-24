@@ -10,6 +10,7 @@
 
 /home/xime/CodeProjects/recipes-app
 
+
 db.recipes.insertMany([
     {
         title: "Sándwich",
