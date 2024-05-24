@@ -52,3 +52,15 @@
         display: inline-block;
     }
 }
+
+.no-results, .no-recipes {
+    height: 50vh;
+    align-content: center;
+    text-align: center;
+    font-size: 1.2em;
+    color: #555;
+    span {
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+}
