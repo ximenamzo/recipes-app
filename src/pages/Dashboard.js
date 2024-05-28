@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import AddModal from '../components/AddModal.js';
@@ -15,10 +16,13 @@ const Dashboard = () => {
     const [isViewModalOpen, setViewModalOpen] = useState(false);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [isLogin, setIsLogin] = useState(localStorage.getItem('isAuthenticated'));
     const recipesPerPage = 10;
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-        fetch('http://localhost:5000/api/recipes')
+        fetch('http://localhost:3000/api/recipes')
             .then(res => res.json())
             .then(data => {
                 const sortedRecipes = data.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
@@ -47,7 +51,7 @@ const Dashboard = () => {
     };
 
     const handleAddRecipe = (newRecipe) => {
-        fetch('http://localhost:5000/api/recipes', {
+        fetch('http://localhost:3000/api/recipes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(newRecipe),
@@ -60,7 +64,7 @@ const Dashboard = () => {
       };
 
       const handleSaveRecipe = (updatedRecipe) => {
-        fetch(`http://localhost:5000/api/recipes/${updatedRecipe._id}`, {
+        fetch(`http://localhost:3000/api/recipes/${updatedRecipe._id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updatedRecipe),
@@ -76,7 +80,7 @@ const Dashboard = () => {
       };
 
       const handleDeleteRecipe = (id) => {
-        fetch(`http://localhost:5000/api/recipes/${id}`, {
+        fetch(`http://localhost:3000/api/recipes/${id}`, {
           method: 'DELETE',
         })
         .then(() => {
@@ -101,6 +105,12 @@ const Dashboard = () => {
         setCurrentPage(pageNumber);
     };
 
+    const logoutSession = () => {
+        localStorage.removeItem('isAuthenticated');
+        setIsLogin(false); 
+        navigate('/');
+    }
+
     return (
         <div className={`dashboard-container`}>
             <h1>Panel de Administración de Recetas</h1>
@@ -113,6 +123,7 @@ const Dashboard = () => {
                     onChange={handleSearchChange}
                     className="search-recipes"
                 />
+                <button className="logout" onClick={() => logoutSession()}>Salir</button>
                 <select onChange={handleFilterChange} className="filter-recipes">
                     <option value="recent">Más Recientes</option>
                     <option value="oldest">Más Antiguas</option>

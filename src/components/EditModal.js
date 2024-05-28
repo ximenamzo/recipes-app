@@ -33,7 +33,7 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
       const formData = new FormData();
       formData.append('image', image);
       try {
-        const imageResponse = await fetch('http://localhost:5000/api/upload', {
+        const imageResponse = await fetch('http://localhost:3000/api/upload', {
           method: 'POST',
           body: formData,
         });
@@ -51,7 +51,7 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/api/recipes/${recipe._id}`, {
+      const response = await fetch(`http://localhost:3000/api/recipes/${recipe._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedRecipe),
