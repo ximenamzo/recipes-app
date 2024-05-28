@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 import Recipes from "./pages/Recipes";
 import Settings from "./pages/Settings";
 
-import Login from "./pages/Login";  // Asegúrate de importar tus nuevos componentes
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 

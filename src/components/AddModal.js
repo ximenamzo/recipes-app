@@ -9,13 +9,14 @@ const AddModal = ({ show, onClose, onSave }) => {
   const [instructions, setInstructions] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
+  const [altText, setAltText] = useState('');
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
   const handleSave = async () => {
-    const newRecipe = { title, category, ingredients, instructions, price, image: '' };
+    const newRecipe = { title, category, ingredients, instructions, price, image, altText: '' };
     if (image) {
       const formData = new FormData();
       formData.append('image', image);
@@ -81,6 +82,10 @@ const AddModal = ({ show, onClose, onSave }) => {
         <div className="form-group">
           <label>Imagen</label>
           <input type="file" onChange={handleImageChange} />
+        </div>
+        <div className="form-group">
+          <label>Texto alternativo</label>
+          <input type="text" value={altText} onChange={(e) => setAltText(e.target.value)} />
         </div>
         <div className="form-actions">
           <button className="cancel-btn" onClick={onClose}>Cancelar</button>

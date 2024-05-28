@@ -7,7 +7,7 @@ export default function RecipeModal({ recipe, onClose }) {
         <div className="modal-overlay">
             <div className="modal-content">
                 <button className="close-btn" onClick={onClose}>X</button>
-                <img src={recipe.image} alt={recipe.title} className="modal-img" />
+                <img src={recipe.image} alt={recipe.altText} title={recipe.altText} className="modal-img" />
                 <h1>{recipe.title}</h1>
                 <h3>Categoría:</h3>
                 <p>{recipe.category}</p>

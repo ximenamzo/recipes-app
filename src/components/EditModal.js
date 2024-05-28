@@ -9,6 +9,7 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
   const [instructions, setInstructions] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState(null);
+  const [altText, setAltText] = useState('');
 
   useEffect(() => {
     if (recipe) {
@@ -18,6 +19,7 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
       setInstructions(recipe.instructions);
       setPrice(recipe.price);
       setImage(recipe.image);
+      setAltText(recipe.altText);
     }
   }, [recipe]);
 
@@ -27,7 +29,7 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
 
   const handleSave = async () => {
     console.log('Updating recipe ID:', recipe._id);
-    const updatedRecipe = { title, category, ingredients, instructions, price };
+    const updatedRecipe = { title, category, ingredients, instructions, price, altText };
   
     if (image && typeof image === 'object') {
       const formData = new FormData();
@@ -97,6 +99,10 @@ const EditModal = ({ show, onClose, onSave, recipe }) => {
         <div className="form-group">
           <label>Imagen</label>
           <input type="file" onChange={handleImageChange} />
+        </div>
+        <div className="form-group">
+          <label>Texto alternativo</label>
+          <input type="text" value={altText} onChange={(e) => setAltText(e.target.value)} />
         </div>
         <div className="form-actions">
           <button className="cancel-btn" onClick={onClose}>Cancelar</button>

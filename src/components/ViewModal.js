@@ -33,6 +33,10 @@ const ViewModal = ({ show, onClose, recipe }) => {
             <img src={`http://localhost:3000${recipe.image}`} alt={recipe.title} style={{ width: '100px' }} />
           </div>
         )}
+        <div className="form-group">
+          <label>Texto alternativo:</label>
+          <p>{recipe.altText}</p>
+        </div>
         <div className="form-actions">
           <button className="cancel-btn" onClick={onClose}>Cerrar</button>
         </div>

@@ -25,8 +25,10 @@ const recipeSchema = new mongoose.Schema({
   instructions: String,
   publicationDate: { type: Date, default: Date.now },
   price: Number,
-  image: String
+  image: String,
+  altText: String
 });
+
 // Esquema para el usuario
 const userSchema = new mongoose.Schema({
   id: { type: mongoose.Schema.Types.ObjectId, auto: true },

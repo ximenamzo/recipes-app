@@ -6,7 +6,7 @@ export default function ImproveSkills(){
         "Obtener tips de cocina",
         "Mejora tus hábitos alimenticios",
         "Genera tu propio entorno culinario",
-    ]
+    ];
 
     const exploreRecipes = () => {
         window.location.href = '/recipes';
@@ -15,7 +15,7 @@ export default function ImproveSkills(){
     return (
         <article className="section improve-skills">
             <div className="col img">
-                <img src="/img/gallery/img_10.jpg" alt="" />
+                <img src="/img/gallery/img_10.jpg" alt="Imagen de un rollo de sushi." title="Sushi"/>
             </div>
             <section className="col typography">
                 <h1 className="title">Mejora de tu forma de cocinar!</h1>
@@ -25,5 +25,5 @@ export default function ImproveSkills(){
                 <button className="btn" onClick={exploreRecipes}>Explorar recetas</button>
             </section>
         </article>
-    )
+    );
 }

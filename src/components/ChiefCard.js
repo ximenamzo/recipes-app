@@ -5,7 +5,7 @@ import { faFacebook, faTwitter, faInstagram, faGithub, faLinkedin } from "@forta
 export default function ChiefCard({chief}) {
     return (
         <div className="chief-card">
-            <img src={chief.img} alt="" />
+            <img src={chief.img} alt={chief.imgAlt} title={chief.title} />
             <div className="chief-card-info">
                 <h3 className="chief-card-name">{chief.name}</h3>
                 <p className="chief-recipe-count">Recipes: <b>{chief.recipesCount}</b></p>
