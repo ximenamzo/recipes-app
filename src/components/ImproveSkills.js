@@ -13,17 +13,17 @@ export default function ImproveSkills(){
     };
 
     return (
-        <div className="section improve-skills">
+        <article className="section improve-skills">
             <div className="col img">
                 <img src="/img/gallery/img_10.jpg" alt="" />
             </div>
-            <div className="col typography">
+            <section className="col typography">
                 <h1 className="title">Mejora de tu forma de cocinar!</h1>
                 { list.map((item, index) => (
                     <p className="skill-item" key={index}>{item}</p>
                 )) }
                 <button className="btn" onClick={exploreRecipes}>Explorar recetas</button>
-            </div>
-        </div>
+            </section>
+        </article>
     )
 }

@@ -19,7 +19,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container main">
+      <main className="container main">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/recipes" element={<Recipes />} />
@@ -27,7 +27,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         </Routes>
-      </div>
+      </main>
       <Footer />
     </Router>
   )

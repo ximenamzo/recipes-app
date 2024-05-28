@@ -71,25 +71,25 @@ export default function Recipes() {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <div>
+        <article>
             <PreviousSearches onSearchChange={handleSearchChange} onSortChange={handleSortChange} onRandomRecipe={handleRandomRecipe} />
             
-            <div className="recipes-container">
+            <section className="recipes-container">
                 {currentRecipes.map((recipe, index) => (
                     <RecipeCard key={index} recipe={recipe} onView={() => setSelectedRecipe(recipe)} />
                 ))}
                 {filteredRecipes.length === 0 && <p className="no-results"><span>No se han encontrado resultados en su búsqueda.</span><br/><br/>Intente con otra palabra clave.</p>}
-            </div>
+            </section>
 
-            <div className="pagination">
+            <section className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button key={index + 1} onClick={() => paginate(index + 1)} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
                         {index + 1}
                     </button>
                 ))}
-            </div>
+            </section>
             {selectedRecipe && <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />}
             {recipes.length === 0 && <p className="no-recipes"><span>Actualmente no hay recetas disponibles.</span><br/><br/>Por favor, inténtelo más tarde.</p>}
-        </div>
+        </article>
     );
 }

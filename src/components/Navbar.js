@@ -31,7 +31,7 @@ export default function Navbar(){
     }
     return (
         <>
-            <div className="navbar container">
+            <nav className="navbar container">
                 <Link to="/" className="logo">Xime<span>Recetas</span></Link>
                 <div className="nav-links">
                     { links.map(link => (
@@ -43,7 +43,7 @@ export default function Navbar(){
                     <div className="bar"></div>
                     <div className="bar"></div>
                 </div>
-            </div>
+            </nav>
             { showSidebar && <Sidebar close={closeSidebar} links={links} /> }
         </>
     )

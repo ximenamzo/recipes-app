@@ -13,11 +13,11 @@ export default function ChiefsSection(){
         }
     ]
     return (
-        <div className="section chiefs">
+        <article className="section chiefs">
             <h1 className="title">La Chef Estrella</h1>
             <div className="top-chiefs-container">
                 { chiefs.map(chief => <ChiefCard key={chief.name} chief={chief} />) }
             </div>
-        </div>
+        </article>
     )
 }

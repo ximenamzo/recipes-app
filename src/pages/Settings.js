@@ -84,29 +84,29 @@ export default function Settings(){
     ]
     const fontSizes = [
         {
-            title: "Small",
+            title: "Pequeño",
             value: "12px"
         },
         {
-            title: "Medium",
+            title: "Mediano",
             value: "16px"
         },
         {
-            title: "Large",
+            title: "Grande",
             value: "20px"
         }
     ]
     const animationSpeeds = [
         {
-              title: "Slow",
+              title: "Lento",
               value: 2
         },
         {
-              title: "Medium",
+              title: "Normal",
               value: 1
         },
         {
-              title: "Fast",
+              title: "Rápido",
               value: .5
         }
     ]
@@ -114,9 +114,9 @@ export default function Settings(){
     const [fontSize, setFontSize] = useState(1)
     const [animationSpeed, setAnimationSpeed] = useState(1)
     return (
-        <div>
-            <div className="section d-block">
-                <h2>Primary Theme</h2>
+        <article>
+            <section className="section d-block">
+                <h2>Tema Principal</h2>
                 <div className="options-container">
                     <div className="option light" onClick={() => changeTheme(0)}>
                         { theme === "light" && (
@@ -133,9 +133,9 @@ export default function Settings(){
                         ) }
                     </div>
                 </div>
-            </div>
-            <div className="section d-block">
-                <h2>Preferred color</h2>
+            </section>
+            <section className="section d-block">
+                <h2>Color de preferencia</h2>
                 <div className="options-container">
                     { primaryColors.map((color, index) => (
                         <div key={index} className="option light" style={{backgroundColor: color}} onClick={() => changeColor(index)}>
@@ -147,9 +147,9 @@ export default function Settings(){
                         </div>
                     ))}
                 </div>
-            </div>
-            <div className="section d-block">
-                <h2>Font size</h2>
+            </section>
+            <section className="section d-block">
+                <h2>Tamaño de las letras</h2>
                 <div className="options-container">
                     { fontSizes.map((size, index) => (
                         <button key={index} className="btn" onClick={() => changeFontSize(index)}>
@@ -158,9 +158,9 @@ export default function Settings(){
                         </button>
                     ))}
                 </div>
-            </div>
-            <div className="section d-block">
-                <h2>Animation speed</h2>
+            </section>
+            <section className="section d-block">
+                <h2>Velocidad de las animaciones</h2>
                 <div className="options-container">
                     { animationSpeeds.map((speed, index) => (
                         <button key={index} className="btn" onClick={() => changeAnimationSpeed(index)}>
@@ -169,8 +169,8 @@ export default function Settings(){
                         </button>
                     ))}
                 </div>
-            </div>
+            </section>
             
-        </div>
+        </article>
     )
 }

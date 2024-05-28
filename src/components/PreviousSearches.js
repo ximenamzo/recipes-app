@@ -6,7 +6,7 @@ export default function PreviousSearches({ onSearchChange, onSortChange, onRando
     const searches = ['pita', 'atún', 'pasta', 'ensalada', '...'];
 
     return (
-        <div className="previous-searches section">
+        <section className="previous-searches section">
             <h2>Búsquedas populares</h2>
             <div className="previous-searches-container">
                 {searches.map((search, index) => (
@@ -30,6 +30,6 @@ export default function PreviousSearches({ onSearchChange, onSortChange, onRando
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
