@@ -30,7 +30,7 @@ const ViewModal = ({ show, onClose, recipe }) => {
         {recipe.image && (
           <div className="form-group">
             <label>Imagen:</label>
-            <img src={`http://localhost:5000${recipe.image}`} alt={recipe.title} style={{ width: '100px' }} />
+            <img src={`http://localhost:3000${recipe.image}`} alt={recipe.title} style={{ width: '100px' }} />
           </div>
         )}
         <div className="form-actions">

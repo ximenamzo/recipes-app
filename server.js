@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 app.use(cors());
@@ -26,8 +27,36 @@ const recipeSchema = new mongoose.Schema({
   price: Number,
   image: String
 });
+// Esquema para el usuario
+const userSchema = new mongoose.Schema({
+  id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+  user: { type: String, required: true },
+  password: { type: String, required: true },
+  enable: { type: Number, required: true, default: 1 } // 0 o 1
+})
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
+const User = mongoose.model('User', userSchema);
+
+// Autenticacion
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ user: username });
+    if (!user) {
+      return res.status(401).json({ message: 'Autenticación fallida' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (isMatch) {
+      res.json({ isAuthenticated: true });
+    } else {
+      res.status(401).json({ message: 'Autenticación fallida' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // Obtener todas las recetas
 app.get('/api/recipes', async (req, res) => {
@@ -115,5 +144,5 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 });
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

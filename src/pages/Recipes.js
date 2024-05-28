@@ -12,12 +12,12 @@ export default function Recipes() {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/recipes')
+        fetch('http://localhost:3000/api/recipes')
             .then(res => res.json())
             .then(data => {
                 const updatedData = data.map(recipe => ({
                     ...recipe,
-                    image: recipe.image ? `http://localhost:5000${recipe.image}` : '/img/default-image.jpg',
+                    image: recipe.image ? `http://localhost:3000${recipe.image}` : '/img/default-image.jpg',
                 }));
                 setRecipes(shuffleArray(updatedData));
                 setFilteredRecipes(shuffleArray(updatedData));

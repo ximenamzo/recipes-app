@@ -20,7 +20,7 @@ const AddModal = ({ show, onClose, onSave }) => {
       const formData = new FormData();
       formData.append('image', image);
       try {
-        const imageResponse = await fetch('http://localhost:5000/api/upload', {
+        const imageResponse = await fetch('http://localhost:3000/api/upload', {
           method: 'POST',
           body: formData,
         });
@@ -35,7 +35,7 @@ const AddModal = ({ show, onClose, onSave }) => {
       }
     }
     try {
-      const response = await fetch('http://localhost:5000/api/recipes', {
+      const response = await fetch('http://localhost:3000/api/recipes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newRecipe),
